@@ -3,7 +3,7 @@ import glob
 import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
-
+from PIL import Image
 from utils_display import show_point_cloud
 
 
@@ -25,11 +25,12 @@ def find_corners_on_calibration_target(img, num_row, num_col, square, display=Fa
     objp[:,:2] = np.mgrid[0:num_col,0:num_row].T.reshape(-1,2)
     objp *= square
 
-    
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-
+    rgb_pil = Image.fromarray(gray)
+    rgb_pil.save('example.png')
+    
     # Find the chess board corners
-    ret, corners = cv.findChessboardCorners(gray, (num_col, num_row), None)
+    ret, corners = cv.findChessboardCorners(gray, (num_col, num_row))
 
     # If found, add object points, image points (after refining them)
     if ret == True:

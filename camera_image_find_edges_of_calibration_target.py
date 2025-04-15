@@ -166,8 +166,11 @@ def points_on_four_edges_calibration_target_camera_image_checkerboard(rgb_image,
     rotation_matrix, _ = cv2.Rodrigues(src=rvec)
 
     object_grid = object_points.reshape(num_row, num_col, 3)
-    vec_x = np.array([square * 1.5, 0, 0])
-    vec_y = np.array([0, square * 2, 0])
+    vec_x = np.array([0.25, 0, 0])
+    vec_y = np.array([0, 0.2, 0])
+
+    vec_x = np.array([square, 0, 0])
+    vec_y = np.array([0, square, 0])
     
     # Extrapolate one square outward from each corner
     top_left     = object_grid[0, 0]     - vec_x - vec_y
@@ -183,8 +186,10 @@ def points_on_four_edges_calibration_target_camera_image_checkerboard(rgb_image,
 
     # images during process
     images_process = [projected_points]
-    points_on_edges = {'left_lower_edge_points': [projected_points[0], projected_points[3]], 'left_upper_edge_points': [projected_points[1], projected_points[0]],
-            'right_lower_edge_points': [projected_points[3], projected_points[2]], 'right_upper_edge_points': [projected_points[2], projected_points[1]]}
+    # points_on_edges = {'left_lower_edge_points': [projected_points[3], projected_points[2]], 'left_upper_edge_points': [projected_points[0], projected_points[3]],
+    #         'right_lower_edge_points': [projected_points[2], projected_points[1]], 'right_upper_edge_points': [projected_points[1], projected_points[0]]}
+    points_on_edges = {'left_lower_edge_points': [projected_points[1], projected_points[0]], 'left_upper_edge_points': [projected_points[2], projected_points[1]],
+            'right_lower_edge_points': [projected_points[0], projected_points[3]], 'right_upper_edge_points': [projected_points[3], projected_points[2]]}
     return points_on_edges, images_process
 
 def line_equation_four_edges_calibration_target_in_camera_image(rgb_image, display=False, camera_matrix=None, num_row=None, num_col=None, square=None, distortion_coefficients=None):

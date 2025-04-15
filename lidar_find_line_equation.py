@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
+from tqdm import tqdm
 from utils_display import show_point_cloud
 
 
@@ -67,7 +67,7 @@ def ransac_line_in_lidar(lidar_point, maximum_iteration=8000, inlier_ratio=0.9, 
     
     best_ratio_line = [0, None]
 
-    for _ in range(maximum_iteration):
+    for _ in tqdm(range(maximum_iteration)):
         
         # randomly select three points
         two_index = np.random.choice([idx for idx in range(point_cloud_orginal.shape[0])], size=2, replace=False)

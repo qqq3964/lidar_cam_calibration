@@ -472,6 +472,8 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
         distCoeffs=calibration_data['distortion_coefficients']
         )
     
+    rgb_pil = Image.fromarray(rgb_image)
+    rgb_pil.save('example.png')
     ################################################################
     # Calculate plane equation and edges equations for calibration
     # target inside lidar and camera coordinate system
@@ -588,16 +590,23 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
 
 
 if __name__ == '__main__':
-    
+    # num_row=6,
+    # num_col=8,
+    # square=152,
     all_output = automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_plane_correspondences_2018(
-        img_rgb_path='example_real_img_lidar_points/frame-1.png',
-        point_cloud_on_target_path='example_real_img_lidar_points/selected_points_in_lidar-1.npy',
-        point_cloud_whole_scene_path='example_real_img_lidar_points/selected_points_in_lidar-1_whole_scene.npy',
+        img_rgb_path='/usr/local/MATLAB/R2024b/toolbox/lidar/lidardata/lcc/vlp16/images/0002.png',
+        # img_rgb_path='/data/tcar_no_intensity/images/1742529139.065286.png',
+        # point_cloud_on_target_path='example_real_img_lidar_points/selected_points_in_lidar-1.npy',
+        # point_cloud_whole_scene_path='example_real_img_lidar_points/selected_points_in_lidar-1_whole_scene.npy',
+        # point_cloud_on_target_path='/home/taewan/tcar/point_cloud.npy',
+        point_cloud_on_target_path='/home/taewan/tcar/point_cloud_matlab.npy',
+        # point_cloud_whole_scene_path='/home/taewan/tcar/point_cloud_whole.npy',
+        point_cloud_whole_scene_path='/home/taewan/tcar/point_cloud_whole_matlab.npy',
         calibration_target_path='example_real_img_lidar_points/left_camera_calibration_parameters.yaml',
-        maximim_distance_two_consecutive_points_in_ray=100,
-        num_row=6,
-        num_col=8,
-        square=152,
+        maximim_distance_two_consecutive_points_in_ray=10,
+        num_row=8,
+        num_col=9,
+        square=81,
         display=False,
         save_path='example_real_img_lidar_points/'
     )

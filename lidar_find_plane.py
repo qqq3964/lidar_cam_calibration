@@ -31,7 +31,7 @@ def find_inliers(distance_points_to_plane, distance_to_be_inlier):
 
     return inliers_index
 
-def ransac_plane_in_lidar(lidar_point, maximum_iteration=50000, inlier_ratio=0.9, distance_to_be_inlier=10):
+def ransac_plane_in_lidar(lidar_point, maximum_iteration=5000, inlier_ratio=0.9, distance_to_be_inlier=10):
     """
     lidar_point: numpy array with shape of (n, 3), all measurements are in mm.
     maximum_iteration: maximum iteration before halting the program.
