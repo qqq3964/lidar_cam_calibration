@@ -9,6 +9,13 @@
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
+            "program": "${workspaceFolder}/automatic_multi_input.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "2",
+            "type": "debugpy",
+            "request": "launch",
             "program": "${workspaceFolder}/automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_plane_correspondences_2018.py",
             "console": "integratedTerminal"
         }
