@@ -6,8 +6,10 @@ This repository contains code for the calibration of the Camera and Lidar with o
 
 "Automatic extrinsic calibration of a camera and a 3d lidar using line and plane correspondences" uses line and plane correspondance of calibration target in RGB image and LiDAR point cloud to find rotation and translation matrix to map points from lidar point cloud to camera coordinate.
 
-## Calibration Target
-Our calibration target is a simple checkerboard calibration target like the paper. However, we used yellow tape around it in order to easily find the exterior edges of the calibration target.
+## Intrinsic Calibration
+```
+python scripts/intrinsic_calibration.py
+```
 
 ## Small Changes
 There are some small and minor changes in the algorithm. For example, the paper works for one or more poses. However, our code just implemented calibration with one pose. The code can be easily changed to incorporate more changes. Also, one of the formulations in the paper results in a rotation matrix that is not orthonormal. We changed that in a manner that keeps the property. However, both methods are implemented.
