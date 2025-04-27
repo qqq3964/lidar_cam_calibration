@@ -9,7 +9,7 @@
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/automatic_multi_input.py",
+            "program": "${workspaceFolder}/automatic_multi_normal_input.py",
             "console": "integratedTerminal"
         },
         {
