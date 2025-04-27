@@ -1,27 +1,49 @@
-# Calibration of Camera and Lidar with only one pose
+# Lidar-Camera Calibration
+The LiDAR-Camera calibration code is based on:
 
-This repository contains code for the calibration of the Camera and Lidar with only one pose. The algorithm is based of the following paper with slight changes.
+> Zhou, Lipu, Zimo Li, and Michael Kaess.  
+> "Automatic extrinsic calibration of a camera and a 3D LiDAR using line and plane correspondences."  
+> 2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS). IEEE, 2018.
 
-> Zhou, Lipu, Zimo Li, and Michael Kaess. "Automatic extrinsic calibration of a camera and a 3d lidar using line and plane correspondences." 2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS). IEEE, 2018.
+While the original method required extracting corner lines, which could lead to limited accuracy, this implementation modifies the approach to use only `normal vectors` and `plane` constraints for calibration, thus improving robustness and reliability.
+## Setup
 
-"Automatic extrinsic calibration of a camera and a 3d lidar using line and plane correspondences" uses line and plane correspondance of calibration target in RGB image and LiDAR point cloud to find rotation and translation matrix to map points from lidar point cloud to camera coordinate.
+### 1. Install Conda Environment
 
-## Intrinsic Calibration
+```bash
+conda env create -f environment.yaml
+conda activate calibration
+```  
+Run the visualization script to prepare the RoI point cloud datasets:
 ```
-python scripts/intrinsic_calibration.py
+jupyter notebook scripts/cam_lidar_visualize.ipynb
+```
+After running the notebook, the folder structure should be:
+```
+data/
+├── Image/*.png
+├── PCD/*.npy
+└── WholePCD/*.npy
 ```
 
-## Small Changes
-There are some small and minor changes in the algorithm. For example, the paper works for one or more poses. However, our code just implemented calibration with one pose. The code can be easily changed to incorporate more changes. Also, one of the formulations in the paper results in a rotation matrix that is not orthonormal. We changed that in a manner that keeps the property. However, both methods are implemented.
+## Calibration
 
-## Input/Output/Execute
-An input set and its corresponding output are proved in the `example_real_img_lidar_points` folder. The input is an image, LiDAR points on the calibration target, all LiDAR points, calibration parameter of the camera. For more informatioin about format of inputs, you can see provided input example.
+### 1. Intrinsic Calibration
+Run the intrinsic calibration script to calibrate the images:
 
-For running the code and testing the code, you can execute this python file: `automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_plane_correspondences_2018.py`
+```bash
+python intrinsic_calibration.py
+```
+Before running, you must update the configuration `YAML file` to reflect the new intrinsic parameters, similar to the ROS format.
 
-Output of algorithm for example input:
-![alt text](https://github.com/farhad-dalirani/find_normal_vector_plane_pointcloud/blob/main/example_real_img_lidar_points/10-10-2022-16-40-20/img_target_lidar_points.png?raw=true)
+```
+configs/*.yaml
+```
 
-![alt text](https://github.com/farhad-dalirani/find_normal_vector_plane_pointcloud/blob/main/example_real_img_lidar_points/10-10-2022-16-40-20/img_scence_lidar_points.png?raw=true)
-
-
+### 2. LiDAR Camera calibration
+Next, run the LiDAR-Camera calibration by executing the shell script:
+```
+./run_calibration.sh
+```
+After execution, the results will be saved inside the output folder.  
+The rotation and translation matrices will be available as both `.txt` and `.npy` files for further usage.
