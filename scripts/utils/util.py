@@ -46,7 +46,7 @@ def show_point_cloud(pcd, scailing=False, intensity=False, frame_ratio=0.8, coor
                     color=points_colors)
     )])
 
-    x_range = points[:, 0].max()*frame_ratio - points[:, 0].min()*frame_ratio
+    x_range = points[:, 0].max()*frame_ratio - points[:, 0].min()*frame_ratio + 4
     y_range = points[:, 1].max()*frame_ratio - points[:, 1].min()*frame_ratio
     z_range = points[:, 2].max()*frame_ratio - points[:, 2].min()*frame_ratio
 

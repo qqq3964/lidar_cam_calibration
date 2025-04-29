@@ -101,7 +101,7 @@ def automatic_extrinsic_calibration(
             rgb_image = cv.undistort(
                 src=rgb_image, 
                 cameraMatrix=calibration_data['camera_matrix'],
-                distCoeffs=-calibration_data['distortion_coefficients']
+                distCoeffs=calibration_data['distortion_coefficients']
                 )
 
             ################################################################
