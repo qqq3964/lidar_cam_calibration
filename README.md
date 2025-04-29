@@ -18,14 +18,16 @@ Run the visualization script to prepare the RoI point cloud datasets:
 ```
 jupyter notebook scripts/cam_lidar_visualize.ipynb
 ```
-After running the notebook, the folder structure should be:
+After running the notebook and executing the **"Save the data"** section, the folder structure should be as follows:
+> ⚠️ **Important:**  
+> Make sure to detect the calibration plane **only within the ROI** (Region of Interest).  
+> Plane extraction **must be performed using the ROI**, as it is specifically defined to isolate the calibration target from irrelevant LiDAR points.
 ```
 data/
 ├── Image/*.png
-├── PCD/*.npy
+├── RoIPCD/*.npy
 └── WholePCD/*.npy
 ```
-
 ## Calibration
 
 ### 1. Intrinsic Calibration
@@ -47,3 +49,19 @@ Next, run the LiDAR-Camera calibration by executing the shell script:
 ```
 After execution, the results will be saved inside the output folder.  
 The rotation and translation matrices will be available as both `.txt` and `.npy` files for further usage.
+
+## Result
+Sample result after successful calibration:
+![Calibration Result](assets/result.png)
+To verify the result by overlaying the projected point clouds onto the images, run the following:
+```
+jupyter notebook scripts/cam_lidar_visualize.ipynb
+```
+In the notebook, navigate to the section **"Mapping the point clouds to image"**, and update the `result_path` variable to match your saved output directory:
+```
+result_path = 'results/28-04-2025-20-44-40'
+```
+
+## Notes
+- We used a Velodyne LiDAR sensor for this calibration setup.
+- Ensure your LiDAR point clouds and camera images are time-synchronized and spatially aligned for optimal results.

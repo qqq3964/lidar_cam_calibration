@@ -2,7 +2,7 @@
 
 python run_calibration.py \
   --img_root data/Image \
-  --roi_pcd_root data/PCD \
+  --roi_pcd_root data/RoIPCD \
   --whole_pcd_root data/WholePCD \
   --calibration_target_path configs/camera_calibration_parameters_velodyne.yaml \
   --num_row 6 \
