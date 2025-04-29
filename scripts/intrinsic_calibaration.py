@@ -2,7 +2,69 @@ import cv2
 import numpy as np
 import glob
 import os
-import random
+
+import yaml
+
+# custom YAML dumper to force inline lists for "data" fields
+class InlineListDumper(yaml.SafeDumper):
+    pass
+
+def represent_inline_list(dumper, data):
+    return dumper.represent_sequence('tag:yaml.org,2002:seq', data, flow_style=True)
+
+# register this behavior for all Python lists
+InlineListDumper.add_representer(list, represent_inline_list)
+
+def save_ros_yaml(cameraMatrix, distCoeffs, image_size, save_path="configs/example.yaml"):
+    fx = float(cameraMatrix[0, 0])
+    fy = float(cameraMatrix[1, 1])
+    cx = float(cameraMatrix[0, 2])
+    cy = float(cameraMatrix[1, 2])
+
+    ros_yaml = {
+        "camera_name": "my_camera",
+        "image_width": int(image_size[0]),
+        "image_height": int(image_size[1]),
+        "camera_matrix": {
+            "rows": 3,
+            "cols": 3,
+            "data": [
+                round(fx, 8), 0.0, round(cx, 8),
+                0.0, round(fy, 8), round(cy, 8),
+                0.0, 0.0, 1.0
+            ]
+        },
+        "distortion_model": "plumb_bob",
+        "distortion_coefficients": {
+            "rows": 1,
+            "cols": 5,
+            "data": [round(float(x), 8) for x in distCoeffs.flatten()]
+        },
+        "rectification_matrix": {
+            "rows": 3,
+            "cols": 3,
+            "data": [
+                1.0, 0.0, 0.0,
+                0.0, 1.0, 0.0,
+                0.0, 0.0, 1.0
+            ]
+        },
+        "projection_matrix": {
+            "rows": 3,
+            "cols": 4,
+            "data": [
+                round(fx, 8), 0.0, round(cx, 8), 0.0,
+                0.0, round(fy, 8), round(cy, 8), 0.0,
+                0.0, 0.0, 1.0, 0.0
+            ]
+        }
+    }
+
+    with open(save_path, 'w') as f:
+        yaml.dump(ros_yaml, f, Dumper=InlineListDumper, default_flow_style=False, sort_keys=False)
+
+    print(f"Saved to {save_path} in ROS camera_info format.")
+
 def run(images,
         checkerboard):
     if not images:
@@ -51,13 +113,16 @@ def run(images,
         if key == 27:  # ESC key to exit early
             print("Stopped by user.")
             break
+        
+    save_ros_yaml(cameraMatrix=cameraMatrix, distCoeffs=distCoeffs, image_size=(img.shape[0], img.shape[1]))
     cv2.destroyAllWindows()
+    
 if __name__ == '__main__':
     # === Checkerboard settings ===
     CHECKERBOARD = (6, 5)  # number of internal corners per chessboard row and column
     SQUARE_SIZE = 0.15       # size of a square (e.g. in meters)
     # === Load all calibration images ===
-    image_dir = "example/Image"  # Folder containing chessboard images
+    image_dir = "/media/taewan/Extreme SSD/data/Image"  # Folder containing chessboard images
     all_images = glob.glob(os.path.join(image_dir, "*.png")) + glob.glob(os.path.join(image_dir, "*.jpg"))
     print(all_images)
     images = all_images

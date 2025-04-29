@@ -4,7 +4,7 @@ python run_calibration.py \
   --img_root data/Image \
   --roi_pcd_root data/RoIPCD \
   --whole_pcd_root data/WholePCD \
-  --calibration_target_path configs/camera_calibration_parameters_velodyne.yaml \
+  --calibration_target_path configs/example.yaml \
   --num_row 6 \
   --num_col 5 \
   --square 150 \
