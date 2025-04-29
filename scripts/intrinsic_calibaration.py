@@ -122,7 +122,7 @@ if __name__ == '__main__':
     CHECKERBOARD = (6, 5)  # number of internal corners per chessboard row and column
     SQUARE_SIZE = 0.15       # size of a square (e.g. in meters)
     # === Load all calibration images ===
-    image_dir = "/media/taewan/Extreme SSD/data/Image"  # Folder containing chessboard images
+    image_dir = "example/Image"  # Folder containing chessboard images
     all_images = glob.glob(os.path.join(image_dir, "*.png")) + glob.glob(os.path.join(image_dir, "*.jpg"))
     print(all_images)
     images = all_images
