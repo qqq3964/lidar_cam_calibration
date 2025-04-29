@@ -34,7 +34,7 @@ data/
 Run the intrinsic calibration script to calibrate the images:
 
 ```bash
-python intrinsic_calibration.py
+python scripts/intrinsic_calibration.py
 ```
 Before running, you must update the configuration `YAML file` to reflect the new intrinsic parameters, similar to the ROS format.
 
