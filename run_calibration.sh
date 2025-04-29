@@ -8,4 +8,4 @@ python run_calibration.py \
   --num_row 6 \
   --num_col 5 \
   --square 150 \
-  --transform_matrix_path results/28-04-2025-20-44-40
+  # --transform_matrix_path results/28-04-2025-20-44-40

@@ -83,6 +83,11 @@ def automatic_extrinsic_calibration(
     # calibration information related to camera
     calibration_data = read_yaml_file(path=calibration_target_path)
     print("Calibration Parameters:\n", calibration_data)
+    plane_edges_equations_in_lidar_camera_coordinates = {
+        'camera_coordinate_plane_equation': [],
+        'lidar_plane_equation': [],
+        'lidar_points_on_plane': []
+        }
     for i in tqdm(range(len(image_rgb_paths))):
         try:
             img_bgr = cv.imread(os.path.join(img_root, image_rgb_paths[i]))
@@ -116,15 +121,8 @@ def automatic_extrinsic_calibration(
                                                                         num_row=num_row,
                                                                         num_col=num_col,
                                                                         square=square)
-                
-                if i == 0:
-                    plane_edges_equations_in_lidar_camera_coordinates = plane_edges_equations_in_lidar_camera_coordinate
-                else:
-                    for idx, (key, value) in enumerate(plane_edges_equations_in_lidar_camera_coordinate.items()):
-                        if i == 1:
-                            temp = plane_edges_equations_in_lidar_camera_coordinates[key]
-                            plane_edges_equations_in_lidar_camera_coordinates[key] = [temp]
-                        plane_edges_equations_in_lidar_camera_coordinates[key].append(value)        
+                for idx, (key, value) in enumerate(plane_edges_equations_in_lidar_camera_coordinate.items()):
+                    plane_edges_equations_in_lidar_camera_coordinates[key].append(value)        
         except Exception:
             traceback.print_exc()
 
@@ -178,13 +176,13 @@ def automatic_extrinsic_calibration(
         )
         
         # backprojection to lidar from image
-        image_to_lidar_points(
-            rgb_image=rgb_image,
-            point_cloud=point_cloud_scene,
-            calibration_data=calibration_data,
-            r_lidar_to_camera_coordinate=r,
-            t_lidar_to_camera_coordinate=t
-        )
+        # image_to_lidar_points(
+        #     rgb_image=rgb_image,
+        #     point_cloud=point_cloud_scene,
+        #     calibration_data=calibration_data,
+        #     r_lidar_to_camera_coordinate=r,
+        #     t_lidar_to_camera_coordinate=t
+        # )
     else:
         img_scence_lidar_points = None
 
@@ -200,11 +198,13 @@ def automatic_extrinsic_calibration(
         np.save(os.path.join('results', dt_string, 'init_t.npy'), init_t)
         np.save(os.path.join('results', dt_string, 'r.npy'), r)
         np.save(os.path.join('results', dt_string, 't.npy'), t)
+        np.save(os.path.join('results', dt_string, 'k.npy'), calibration_data['camera_matrix'])
+        np.save(os.path.join('results', dt_string, 'distortion.npy'), calibration_data['distortion_coefficients'])
         np.savetxt(os.path.join('results', dt_string, 'init_r.txt'), init_r)
         np.savetxt(os.path.join('results', dt_string, 'init_t.txt'), init_t)
         np.savetxt(os.path.join('results', dt_string, 'r.txt'), r)
         np.savetxt(os.path.join('results', dt_string, 't.txt'), t)
-
+    
         im_temp = Image.fromarray(img_target_lidar_points)
         im_temp.save(os.path.join('results', dt_string, "img_target_lidar_points.png"))
 
