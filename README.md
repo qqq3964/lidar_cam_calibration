@@ -36,7 +36,8 @@ Run the intrinsic calibration script to calibrate the images:
 ```bash
 python scripts/intrinsic_calibration.py
 ```
-Before running, you must update the configuration `YAML file` to reflect the new intrinsic parameters, similar to the ROS format.
+After running the code, a file named `configs/example.yaml` will be created. This file follows the standard ROS `camera_info` format.
+
 
 ```
 configs/*.yaml
